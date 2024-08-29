@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../data/firebase_services/firebase_auth.dart';
+import '../util/dialog.dart';
+import '../util/exception.dart';
+import '../util/imagepicker.dart';
 
 class SignupScreen extends StatefulWidget {
   final VoidCallback show;
@@ -20,7 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
   FocusNode username_F = FocusNode();
   final bio = TextEditingController();
   FocusNode bio_F = FocusNode();
-
+  File? _imageFile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,22 +42,33 @@ class _SignupScreenState extends State<SignupScreen> {
           Center(
             child: Image.asset('assets/images/logo.jpg'),
           ),
-          SizedBox(height: 60.h,),
+          SizedBox(
+            height: 60.h,
+          ),
           InkWell(
             onTap: () async {
-              // File _imagefilee = await ImagePickerr().uploadImage('gallery');
-              // setState(() {
-              //   _imageFile = _imagefilee;
-              // });
+              File _imagefilee = await ImagePickerr().uploadImage('gallery');
+              setState(() {
+                _imageFile = _imagefilee;
+              });
             },
             child: CircleAvatar(
               radius: 36.r,
               backgroundColor: Colors.grey,
-              child:CircleAvatar(
+              child: _imageFile == null
+                  ? CircleAvatar(
                 radius: 34.r,
                 backgroundImage: AssetImage('assets/images/person.png'),
                 backgroundColor: Colors.grey.shade200,
               )
+                  : CircleAvatar(
+                radius: 34.r,
+                backgroundImage: Image.file(
+                  _imageFile!,
+                  fit: BoxFit.cover,
+                ).image,
+                backgroundColor: Colors.grey.shade200,
+              ),
             ),
           ),
           SizedBox(height: 50.h),
@@ -121,8 +139,18 @@ class _SignupScreenState extends State<SignupScreen> {
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: InkWell(
         onTap: () async {
-          // await Authentication()
-          //     .Login(email: email.text, password: password.text);
+          try {
+            await Authentication().Signup(
+              email: email.text,
+              password: password.text,
+              passwordConfirme: passwordConfirme.text,
+              username: username.text,
+              bio: bio.text,
+              profile: File(''),
+            );
+          } on exceptions catch (e) {
+            dialogBuilder(context, e.message);
+          }
         },
         child: Container(
           alignment: Alignment.center,
