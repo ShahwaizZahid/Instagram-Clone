@@ -10,9 +10,15 @@ class AddReelsScreen extends StatefulWidget {
 class _AddReelsScreenState extends State<AddReelsScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.amber,
-      body: Center(child: Text('Add new Reel')),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        title: const Text(
+          'New Reels',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Colors.white,
+      ),
     );
   }
 }
