@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:isntragram_clone/data/firebase_services/storage.dart';
@@ -27,9 +28,10 @@ class Authentication {
     required String passwordConfirme,
     required String username,
     required String bio,
-    required File profile,
+    required File? profile,
   }) async {
-    String URL;
+    String URL = '';
+
     try {
       if (email.isNotEmpty &&
           password.isNotEmpty &&
@@ -41,35 +43,31 @@ class Authentication {
             password: password.trim(),
           );
 
-          // upload profile image on storage
-
-          if (profile != File('')) {
-            URL =
-            await StorageMethod().uploadImageToStorage('Profile', profile);
-          } else {
-            URL = '';
+          // upload profile image to storage
+          if (profile != null && profile.path.isNotEmpty) {
+            URL = await StorageMethod().uploadImageToStorage('Profile', profile);
           }
 
-          // get information with firestor
-
+          // get information with Firestore
           await Firebase_Firestor().CreateUser(
             email: email,
             username: username,
             bio: bio,
-            profile: URL == ''
+            profile: URL.isEmpty
                 ? 'https://firebasestorage.googleapis.com/v0/b/instagram-8a227.appspot.com/o/person.png?alt=media&token=c6fcbe9d-f502-4aa1-8b4b-ec37339e78ab'
                 : URL,
           );
 
-
         } else {
-          throw exceptions('password and confirm password should be same');
+          throw exceptions('Password and confirm password should be the same');
         }
       } else {
-        throw exceptions('enter all the fields');
+        throw exceptions('Please enter all the fields');
       }
     } on FirebaseException catch (e) {
       throw exceptions(e.message.toString());
     }
   }
+
+
 }
