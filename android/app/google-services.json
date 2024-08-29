@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738091971082",
+    "project_id": "instragram-80015",
+    "storage_bucket": "instragram-80015.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738091971082:android:77541a2d497a09ea09a5f3",
+        "android_client_info": {
+          "package_name": "com.example.isntragram_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdInT4hp1WTnzH6kiJSS09-gK2YTE1H24"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
