@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../screen/add_screen.dart';
 import '../screen/explore_screen.dart';
 import '../screen/home_screen.dart';
 import '../screen/profile_screen.dart';
@@ -84,7 +85,7 @@ class _NavigationScreenState extends State<NavigationScreen>{
         children: [
           HomeScreen(),
           ExploreScreen(),
-          // AddScreen(),
+          AddScreen(),
           ReelScreen(),
           ProfileScreen(),
         ],

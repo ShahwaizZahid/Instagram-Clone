@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:isntragram_clone/widgets/post_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,6 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         backgroundColor: const Color(0xffFAFAFA),
       ),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return PostWidget();
+              },
+              childCount: 5, // Number of items in the list
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -46,5 +59,4 @@ class _HomeScreenState extends State<HomeScreen> {
       print("Error signing out: $e");
     }
   }
-
 }
