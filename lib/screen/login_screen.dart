@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final VoidCallback show;
+  LoginScreen(this.show, {super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -145,6 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           GestureDetector(
+            onTap: widget.show,
             child: Text(
               "Sign up ",
               style: TextStyle(
