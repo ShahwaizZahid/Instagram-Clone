@@ -89,7 +89,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ? CircularProgressIndicator()
                         : SignupButton(),
                     SizedBox(height: 10.h),
-                    HaveAccount()
+                    HaveAccount(),
                   ],
                 ),
               ),
@@ -154,6 +154,17 @@ class _SignupScreenState extends State<SignupScreen> {
                 bio: bio.text,
                 profile: _imageFile ?? File(''),
               );
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Signup successful!'),
+                  backgroundColor: Colors.green, // Customize the background color here
+                  duration: Duration(seconds: 3),
+                ),
+              );
+
+              // Optionally navigate to another screen or clear the form
+              // Navigator.pushReplacementNamed(context, '/login');
             } on exceptions catch (e) {
               dialogBuilder(context, e.message);
             } finally {
