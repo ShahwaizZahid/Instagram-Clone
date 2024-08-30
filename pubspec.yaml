@@ -45,6 +45,7 @@ dependencies:
   photo_manager: ^3.2.3
   cached_network_image: ^3.4.0
   date_format: ^2.0.9
+  video_player: ^2.9.1
 
 dev_dependencies:
   flutter_test:

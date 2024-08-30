@@ -13,7 +13,7 @@ class _ReelScreenState extends State<ReelScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("data"),
+        title: Text("reels"),
       ),
     );
   }
