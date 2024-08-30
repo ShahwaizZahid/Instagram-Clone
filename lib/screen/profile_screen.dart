@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:isntragram_clone/data/model/usermodel.dart';
+import 'package:isntragram_clone/screen/post_screen.dart';
 import '../data/firebase_services/firestore.dart';
 import '../util/image_cached.dart';
 
@@ -55,9 +56,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   return SliverGrid(
                     delegate: SliverChildBuilderDelegate((context, index) {
                       var snap = snapshot.data!.docs[index];
-                      return Container(
-                        child: CachedImage(snap['postImage']),
-                      );
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PostScreen(snap.data())));
+                          },
+                          child: CachedImage(snap['postImage']));
                     }, childCount: snaplength),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
