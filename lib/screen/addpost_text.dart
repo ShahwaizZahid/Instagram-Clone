@@ -64,9 +64,11 @@ class _AddPostTextScreenState extends State<AddPostTextScreen> {
       ),
       body: SafeArea(
           child: islooding
-              ? const CircularProgressIndicator(
-                  color: Colors.black,
-                )
+              ? Center(
+                child: const CircularProgressIndicator(
+                    color: Colors.black,
+                  ),
+              )
               : Padding(
                   padding: EdgeInsets.only(top: 10.h),
                   child: Column(

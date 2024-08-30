@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,26 +40,38 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return PostWidget();
-              },
-              childCount: 5, // Number of items in the list
-            ),
-          ),
+          StreamBuilder(
+            stream: _firebaseFirestore
+                .collection('posts')
+                .orderBy('time', descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    return PostWidget(snapshot.data!.docs[index].data());
+                  },
+                  childCount:
+                  snapshot.data == null ? 0 : snapshot.data!.docs.length,
+                ),
+              );
+            },
+          )
         ],
       ),
     );
   }
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  Future<void> signOut() async {
-    try {
-      await _auth.signOut();
-      print("User successfully logged out.");
-    } catch (e) {
-      print("Error signing out: $e");
-    }
-  }
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // Future<void> signOut() async {
+  //   try {
+  //     await _auth.signOut();
+  //     print("User successfully logged out.");
+  //   } catch (e) {
+  //     print("Error signing out: $e");
+  //   }
+  // }
 }

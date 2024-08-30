@@ -1,9 +1,13 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../util/image_cached.dart';
+
 class PostWidget extends StatefulWidget {
-  const PostWidget({super.key});
+  final snapshot;
+ PostWidget(this.snapshot ,{super.key});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -24,15 +28,15 @@ class _PostWidgetState extends State<PostWidget> {
                 child: SizedBox(
                   width: 35.w,
                   height: 35.h,
-                  child: Image.asset('assets/images/person.png'),
+                  child: CachedImage(widget.snapshot['profileImage']),
                 ),
               ),
               title: Text(
-                "Username",
+                widget.snapshot['username'],
                 style: TextStyle(fontSize: 13.sp),
               ),
               subtitle: Text(
-                "Location",
+                widget.snapshot['location'],
                 style: TextStyle(fontSize: 11.sp),
               ),
               trailing: Icon(Icons.more_horiz),
@@ -43,9 +47,8 @@ class _PostWidgetState extends State<PostWidget> {
         Container(
           height: 375.h,
           width: 375.w,
-          child: Image.asset(
-            'assets/images/post.jpg',
-            fit: BoxFit.cover,
+          child: CachedImage(
+            widget.snapshot['postImage'],
           ),
         ),
         Container(
@@ -87,7 +90,7 @@ class _PostWidgetState extends State<PostWidget> {
                   padding: EdgeInsets.only(
                       left: 19.w, top: 13.5.h, bottom: 5.h),
                   child: Text(
-                    '0',
+                    widget.snapshot['like'].length.toString(),
                     style: TextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w500,
@@ -100,13 +103,13 @@ class _PostWidgetState extends State<PostWidget> {
                 child: Row(
                   children: [
                     Text(
-                      "Username",
+                      "Username" + " ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 13.sp),
                     ),
                     Text(
-                      "caption",
+                      widget.snapshot['caption'],
                       style: TextStyle(fontSize: 13.sp),
                     )
                   ],
@@ -117,7 +120,8 @@ class _PostWidgetState extends State<PostWidget> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 15.w, top: 20.h, bottom: 8.h,),
                   child: Text(
-                    "Dtaeformat",
+                    formatDate(widget.snapshot['time'].toDate(),
+                        [yyyy, '-', mm, '-', dd]),
                     style: TextStyle(
                         color: Colors.grey,
                         fontSize: 11.sp),
