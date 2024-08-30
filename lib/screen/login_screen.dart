@@ -1,4 +1,5 @@
 import 'dart:async'; // Import for Timer (if you use it for any delay or animation)
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -146,7 +147,20 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
             // Navigate to another screen if needed
-          } catch (e) {
+          } on FirebaseException catch(e){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(e.code),
+                backgroundColor: Colors.red, // Customize the background color here
+              ),
+            );
+
+          }catch (e) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Errro in login"),
+                backgroundColor: Colors.redAccent
+                , // Customize the background color here
+              ),
+            );
             setState(() {
               _errorMessage = e.toString();
             });
