@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import 'addpost_text.dart';
+
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
 
@@ -94,9 +96,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
           Center(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.w),
-              child: Text(
-                'Next',
-                style: TextStyle(fontSize: 15.sp, color: Colors.blue),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AddPostTextScreen(_file!),
+                  ));
+                },
+                child: Text(
+                  'Next',
+                  style: TextStyle(fontSize: 15.sp, color: Colors.blue),
+                ),
               ),
             ),
           ),
