@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+import 'ReelEditScreen.dart';
+
 class AddReelsScreen extends StatefulWidget {
   const AddReelsScreen({super.key});
 
@@ -133,18 +135,35 @@ class _AddReelsScreenState extends State<AddReelsScreen> {
         backgroundColor: Colors.white,
       ),
       body: SafeArea(
-          child: GridView.builder(
-        shrinkWrap: true,
-        itemCount: _mediaList.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            mainAxisExtent: 250,
-            crossAxisSpacing: 3.w,
-            mainAxisSpacing: 5.h),
-        itemBuilder: (BuildContext context, int index) {
-          return _mediaList[index];
-        },
-      )),
+        child: GridView.builder(
+          shrinkWrap: true,
+          itemCount: _mediaList.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisExtent: 250,
+              crossAxisSpacing: 3.w,
+              mainAxisSpacing: 5.h),
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  indexx = index;
+                  _file = path[index];
+
+                  // Navigate to the ReelEditScreen and pass the selected video file
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => ReelsEditeScreen(_file!),
+                    ),
+                  );
+                });
+              },
+
+              child: _mediaList[index],
+            );
+          },
+        ),
+      ),
     );
   }
 }
