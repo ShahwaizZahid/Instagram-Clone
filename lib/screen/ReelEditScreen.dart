@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 
+import '../data/firebase_services/firestore.dart';
+import '../data/firebase_services/storage.dart';
+
 class ReelsEditeScreen extends StatefulWidget {
   final File videoFile;
   ReelsEditeScreen(this.videoFile, {super.key});
@@ -31,6 +34,15 @@ class _ReelsEditeScreenState extends State<ReelsEditeScreen> {
     _vlcPlayerController.dispose();
     caption.dispose();
     super.dispose();
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -113,6 +125,27 @@ class _ReelsEditeScreenState extends State<ReelsEditeScreen> {
                     ),
                   ),
                   GestureDetector(
+                    onTap: () async {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      try {
+                        String reelsUrl = await StorageMethod()
+                            .uploadImageToStorage(
+                            'Reels', widget.videoFile);
+                        await Firebase_Firestor().CreatReels(
+                          video: reelsUrl,
+                          caption: caption.text,
+                        );
+                        Navigator.of(context).pop();
+                      } catch (e) {
+                        _showErrorSnackBar('Failed to share reel. Please try again.');
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
+                    },
                     child: Container(
                       alignment: Alignment.center,
                       height: 45.h,
@@ -121,7 +154,11 @@ class _ReelsEditeScreenState extends State<ReelsEditeScreen> {
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(10.r),
                       ),
-                      child: Text(
+                      child: isLoading
+                          ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                          : Text(
                         'Share',
                         style: TextStyle(
                           fontSize: 16.sp,
