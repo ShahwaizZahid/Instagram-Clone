@@ -82,7 +82,7 @@ class _NavigationScreenState extends State<NavigationScreen>{
       body: PageView(
         controller: pageController,
         onPageChanged: onPageChanged,
-        children: [
+        children: const [
           HomeScreen(),
           ExploreScreen(),
           AddScreen(),
