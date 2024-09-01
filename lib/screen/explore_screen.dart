@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:isntragram_clone/screen/post_screen.dart';
 
 import '../util/image_cached.dart';
 
@@ -40,6 +41,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           (context, index) {
                         final snap = snapshot.data!.docs[index];
                         return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => PostScreen(snap.data(),),
+                              ),
+                            );
+                          },
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.grey,
