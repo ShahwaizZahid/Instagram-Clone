@@ -1,5 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/reels_item.dart';
 
 class ReelScreen extends StatefulWidget {
   const ReelScreen({super.key});
@@ -10,78 +12,31 @@ class ReelScreen extends StatefulWidget {
 
 class _ReelScreenState extends State<ReelScreen> {
   @override
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("reels"),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: StreamBuilder(
+          stream: _firestore
+              .collection('reels')
+              .orderBy('time', descending: true)
+              .snapshots(),
+          builder: (context, snapshot) {
+            return PageView.builder(
+              scrollDirection: Axis.vertical,
+              controller: PageController(initialPage: 0, viewportFraction: 1),
+              itemBuilder: (context, index) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                return ReelsItem(snapshot.data!.docs[index].data());
+              },
+              itemCount: snapshot.data == null ? 0 : snapshot.data!.docs.length,
+            );
+          },
+        ),
       ),
     );
   }
 }
-
-
-
-
-// SizedBox(height: 20.h),
-// SizedBox(
-// height: 60,
-// width: 280.w,
-// child: TextField(
-// controller: caption,
-// maxLines: 10,
-// decoration: const InputDecoration(
-// hintText: 'Write a caption ...',
-// border: InputBorder.none,
-// ),
-// ),
-// ),
-// Divider(),
-// SizedBox(height: 20.h),
-// Row(
-// mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-// children: [
-// GestureDetector(
-// onTap: () {
-// // Save draft functionality
-// },
-// child: Container(
-// alignment: Alignment.center,
-// height: 45.h,
-// width: 150.w,
-// decoration: BoxDecoration(
-// color: Colors.white,
-// border: Border.all(
-// color: Colors.black,
-// ),
-// borderRadius: BorderRadius.circular(10.r),
-// ),
-// child: Text(
-// 'Save draft',
-// style: TextStyle(fontSize: 16.sp),
-// ),
-// ),
-// ),
-// GestureDetector(
-// onTap: () async {
-// // Share functionality
-// },
-// child: Container(
-// alignment: Alignment.center,
-// height: 45.h,
-// width: 150.w,
-// decoration: BoxDecoration(
-// color: Colors.blue,
-// borderRadius: BorderRadius.circular(10.r),
-// ),
-// child: Text(
-// 'Share',
-// style: TextStyle(
-// fontSize: 16.sp,
-// color: Colors.white,
-// fontWeight: FontWeight.bold,
-// ),
-// ),
-// ),
-// ),
-// ],
-// )
