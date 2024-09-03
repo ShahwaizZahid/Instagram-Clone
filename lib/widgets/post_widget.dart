@@ -1,10 +1,13 @@
 import 'package:date_format/date_format.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../data/firebase_services/firestore.dart';
 import '../util/image_cached.dart';
 import 'comment.dart';
+import 'like_animation.dart';
 
 class PostWidget extends StatefulWidget {
   final snapshot;
@@ -15,7 +18,16 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
+  bool isAnimating = false;
+  String user = '';
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    user = _auth.currentUser!.uid;
+  }
+
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -47,11 +59,47 @@ class _PostWidgetState extends State<PostWidget> {
         SizedBox(
           height: 5.h,
         ),
-        Container(
-          height: 375.h,
-          width: 375.w,
-          child: CachedImage(
-            widget.snapshot['postImage'],
+        GestureDetector(
+           onDoubleTap: () {
+    Firebase_Firestor().like(
+    like: widget.snapshot['like'],
+    type: 'posts',
+    uid: user,
+    postId: widget.snapshot['postId']);
+    setState(() {
+    isAnimating = true;
+    });
+    },
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Container(
+                height: 375.h,
+                width: 375.w,
+                child: CachedImage(
+                  widget.snapshot['postImage'],
+                ),
+              ),
+              AnimatedOpacity(
+                duration: Duration(milliseconds: 200),
+                opacity: isAnimating ? 1 : 0,
+                child: LikeAnimation(
+                  child: Icon(
+                    Icons.favorite,
+                    size: 100.w,
+                    color: Colors.red,
+                  ),
+                  isAnimating: isAnimating,
+                  duration: Duration(milliseconds: 400),
+                  iconlike: false,
+                  End: () {
+                    setState(() {
+                      isAnimating = false;
+                    });
+                  },
+                ),
+              ),
+            ]
           ),
         ),
         Container(
@@ -63,9 +111,26 @@ class _PostWidgetState extends State<PostWidget> {
               Row(
                 children: [
                   SizedBox(width: 14.w),
-                  Icon(
-                    Icons.favorite_outline,
-                    size: 25.w,
+                  LikeAnimation(
+                    isAnimating: widget.snapshot['like'].contains(user),
+                    child: IconButton(
+                      onPressed: () {
+                        Firebase_Firestor().like(
+                            like: widget.snapshot['like'],
+                            type: 'posts',
+                            uid: user,
+                            postId: widget.snapshot['postId']);
+                      },
+                      icon: Icon(
+                        widget.snapshot['like'].contains(user)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: widget.snapshot['like'].contains(user)
+                            ? Colors.red
+                            : Colors.black,
+                        size: 24.w,
+                      ),
+                    ),
                   ),
                   SizedBox(width: 17.w),
                   GestureDetector(
@@ -163,6 +228,5 @@ class _PostWidgetState extends State<PostWidget> {
         ),
       ],
     );
-    ;
   }
 }
