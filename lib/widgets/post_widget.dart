@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../util/image_cached.dart';
+import 'comment.dart';
 
 class PostWidget extends StatefulWidget {
   final snapshot;
@@ -65,9 +66,32 @@ class _PostWidgetState extends State<PostWidget> {
                     size: 25.w,
                   ),
                   SizedBox(width: 17.w),
-                  Image.asset(
-                    'assets/images/comment.webp',
-                    height: 28.h,
+                  GestureDetector(
+                    onTap: (){
+                      showBottomSheet(
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (context) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                            ),
+                            child: DraggableScrollableSheet(
+                              maxChildSize: 0.6,
+                              initialChildSize: 0.6,
+                              minChildSize: 0.2,
+                              builder: (context, scrollController) {
+                                return Comment();
+                              },
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Image.asset(
+                      'assets/images/comment.webp',
+                      height: 28.h,
+                    ),
                   ),
                   SizedBox(width: 17.w),
                   Image.asset(
