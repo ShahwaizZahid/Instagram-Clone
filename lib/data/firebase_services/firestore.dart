@@ -31,7 +31,6 @@ class Firebase_Firestor {
     return true;
   }
 
-
   Future<Usermodel> getUser({String? UID}) async {
     try {
       final user = await _firebaseFirestore
@@ -93,4 +92,24 @@ class Firebase_Firestor {
     return true;
   }
 
+  Future<bool> Comments({
+    required String comment,
+    required String type,
+    required String uidd,
+  }) async {
+    var uid = Uuid().v4();
+    Usermodel user = await getUser();
+    await _firebaseFirestore
+        .collection(type)
+        .doc(uidd)
+        .collection('comments')
+        .doc(uid)
+        .set({
+      'comment': comment,
+      'username': user.username,
+      'profileImage': user.profile,
+      'CommentUid': uid,
+    });
+    return true;
+  }
 }

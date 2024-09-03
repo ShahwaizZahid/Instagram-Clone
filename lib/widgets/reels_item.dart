@@ -7,6 +7,8 @@ import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:isntragram_clone/util/image_cached.dart';
 import 'package:video_player/video_player.dart';
 
+import 'comment.dart';
+
 class ReelsItem extends StatefulWidget {
   final dynamic snapshot;
   ReelsItem(this.snapshot, {super.key});
@@ -102,10 +104,36 @@ class _ReelsItemState extends State<ReelsItem> {
                 style: TextStyle(fontSize: 12.sp, color: Colors.white),
               ),
               SizedBox(height: 15.h),
-              Icon(
-                Icons.comment,
-                color: Colors.white,
-                size: 28.w,
+              GestureDetector(
+                onTap: () {
+                  showBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (context) {
+                      return Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom,
+                        ),
+                        child: DraggableScrollableSheet(
+                          maxChildSize: 0.6,
+                          initialChildSize: 0.6,
+                          minChildSize: 0.2,
+                          builder: (context, scrollController) {
+                            return Comment(
+                              'reels',
+                              widget.snapshot['postId'],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Icon(
+                  Icons.comment,
+                  color: Colors.white,
+                  size: 28.w,
+                ),
               ),
               SizedBox(height: 3.h),
               Text(

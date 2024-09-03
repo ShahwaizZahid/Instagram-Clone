@@ -8,7 +8,7 @@ import 'comment.dart';
 
 class PostWidget extends StatefulWidget {
   final snapshot;
- PostWidget(this.snapshot ,{super.key});
+  PostWidget(this.snapshot, {super.key});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -44,7 +44,9 @@ class _PostWidgetState extends State<PostWidget> {
             ),
           ),
         ),
-        SizedBox(height: 5.h,),
+        SizedBox(
+          height: 5.h,
+        ),
         Container(
           height: 375.h,
           width: 375.w,
@@ -67,7 +69,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ),
                   SizedBox(width: 17.w),
                   GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       showBottomSheet(
                         backgroundColor: Colors.transparent,
                         context: context,
@@ -81,7 +83,10 @@ class _PostWidgetState extends State<PostWidget> {
                               initialChildSize: 0.6,
                               minChildSize: 0.2,
                               builder: (context, scrollController) {
-                                return Comment();
+                                return Comment(
+                                  'posts',
+                                  widget.snapshot['postId'],
+                                );
                               },
                             ),
                           );
@@ -111,8 +116,8 @@ class _PostWidgetState extends State<PostWidget> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      left: 19.w, top: 13.5.h, bottom: 5.h),
+                  padding:
+                      EdgeInsets.only(left: 19.w, top: 13.5.h, bottom: 5.h),
                   child: Text(
                     widget.snapshot['like'].length.toString(),
                     style: TextStyle(
@@ -129,8 +134,7 @@ class _PostWidgetState extends State<PostWidget> {
                     Text(
                       "Username" + " ",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 13.sp),
+                          fontWeight: FontWeight.bold, fontSize: 13.sp),
                     ),
                     Text(
                       widget.snapshot['caption'],
@@ -142,13 +146,15 @@ class _PostWidgetState extends State<PostWidget> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 15.w, top: 20.h, bottom: 8.h,),
+                  padding: EdgeInsets.only(
+                    left: 15.w,
+                    top: 20.h,
+                    bottom: 8.h,
+                  ),
                   child: Text(
                     formatDate(widget.snapshot['time'].toDate(),
                         [yyyy, '-', mm, '-', dd]),
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 11.sp),
+                    style: TextStyle(color: Colors.grey, fontSize: 11.sp),
                   ),
                 ),
               ),
@@ -156,6 +162,7 @@ class _PostWidgetState extends State<PostWidget> {
           ),
         ),
       ],
-    );;
+    );
+    ;
   }
 }
