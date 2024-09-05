@@ -60,47 +60,44 @@ class _PostWidgetState extends State<PostWidget> {
           height: 5.h,
         ),
         GestureDetector(
-           onDoubleTap: () {
-    Firebase_Firestor().like(
-    like: widget.snapshot['like'],
-    type: 'posts',
-    uid: user,
-    postId: widget.snapshot['postId']);
-    setState(() {
-    isAnimating = true;
-    });
-    },
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                height: 375.h,
-                width: 375.w,
-                child: CachedImage(
-                  widget.snapshot['postImage'],
+          onDoubleTap: () {
+            Firebase_Firestor().like(
+                like: widget.snapshot['like'],
+                type: 'posts',
+                uid: user,
+                postId: widget.snapshot['postId']);
+            setState(() {
+              isAnimating = true;
+            });
+          },
+          child: Stack(alignment: Alignment.center, children: [
+            Container(
+              height: 375.h,
+              width: 375.w,
+              child: CachedImage(
+                widget.snapshot['postImage'],
+              ),
+            ),
+            AnimatedOpacity(
+              duration: const Duration(milliseconds: 200),
+              opacity: isAnimating ? 1 : 0,
+              child: LikeAnimation(
+                isAnimating: isAnimating,
+                duration: const Duration(milliseconds: 400),
+                iconlike: false,
+                End: () {
+                  setState(() {
+                    isAnimating = false;
+                  });
+                },
+                child: Icon(
+                  Icons.favorite,
+                  size: 100.w,
+                  color: Colors.red,
                 ),
               ),
-              AnimatedOpacity(
-                duration: Duration(milliseconds: 200),
-                opacity: isAnimating ? 1 : 0,
-                child: LikeAnimation(
-                  child: Icon(
-                    Icons.favorite,
-                    size: 100.w,
-                    color: Colors.red,
-                  ),
-                  isAnimating: isAnimating,
-                  duration: Duration(milliseconds: 400),
-                  iconlike: false,
-                  End: () {
-                    setState(() {
-                      isAnimating = false;
-                    });
-                  },
-                ),
-              ),
-            ]
-          ),
+            ),
+          ]),
         ),
         Container(
           width: 375.w,
@@ -182,7 +179,7 @@ class _PostWidgetState extends State<PostWidget> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding:
-                      EdgeInsets.only(left: 19.w, top: 13.5.h, bottom: 5.h),
+                      EdgeInsets.only(left: 19.w, bottom: 5.h),
                   child: Text(
                     widget.snapshot['like'].length.toString(),
                     style: TextStyle(
@@ -197,7 +194,7 @@ class _PostWidgetState extends State<PostWidget> {
                 child: Row(
                   children: [
                     Text(
-                      "Username" + " ",
+                widget.snapshot['username'] + ":  ",
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 13.sp),
                     ),

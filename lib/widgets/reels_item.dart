@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,17 @@ class _ReelsItemState extends State<ReelsItem> {
       }
       isPlaying = !isPlaying;
     });
+  }
+
+  Future<int> getCommentCount() async {
+    QuerySnapshot commentSnapshot = await FirebaseFirestore
+        .instance
+        .collection('reels')
+        .doc(widget.snapshot['postId'])
+        .collection('comments')
+        .get();
+
+    return commentSnapshot.size; // Returns the number of documents (comments)
   }
 
   @override
@@ -182,12 +194,35 @@ class _ReelsItemState extends State<ReelsItem> {
                 ),
               ),
               SizedBox(height: 3.h),
-              Text(
-                '0',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.white,
-                ),
+              FutureBuilder<int>(
+                future: getCommentCount(), // Call the method that fetches comment count
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text(
+                      'Loading...',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(
+                      'Error',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                      ),
+                    );
+                  } else {
+                    return Text(
+                      snapshot.data.toString(), // Display the comment count
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: Colors.white,
+                      ),
+                    );
+                  }
+                },
               ),
               SizedBox(height: 15.h),
               Icon(
