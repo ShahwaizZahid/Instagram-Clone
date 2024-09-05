@@ -1,9 +1,7 @@
-import 'dart:async'; // Import for Timer (if you use it for any delay or animation)
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../data/firebase_services/firebase_auth.dart';
+import '../util/exception.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback show;
@@ -19,8 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final password = TextEditingController();
   FocusNode password_F = FocusNode();
 
-  bool _isLoading = false; // Track loading state
-  String _errorMessage = ''; // Track error message
+  bool _isLoading = false;
+  String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                height: 100.h,
-                width: 96.w,
-              ),
-              Center(
-                child: Image.asset('assets/images/logo.jpg'),
-              ),
+              SizedBox(height: 100.h),
+              Center(child: Image.asset('assets/images/logo.jpg')),
               SizedBox(height: 120.h),
               _buildTextField(email, email_F, 'Email', Icons.email),
               SizedBox(height: 15.h),
@@ -47,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 15.h),
               _buildLoginButton(),
               SizedBox(height: 15.h),
-              _buildHaveAccount()
+              _buildHaveAccount(),
             ],
           ),
         ),
@@ -55,8 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, FocusNode focusNode,
-      String hintText, IconData icon) {
+  Widget _buildTextField(TextEditingController controller, FocusNode focusNode, String hintText, IconData icon) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Container(
@@ -69,28 +61,22 @@ class _LoginScreenState extends State<LoginScreen> {
           style: TextStyle(fontSize: 18.sp, color: Colors.black),
           controller: controller,
           focusNode: focusNode,
-          obscureText: hintText == 'Password', // Hide password text
+          obscureText: hintText == 'Password',
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: Icon(
-              icon,
-              color: focusNode.hasFocus ? Colors.black : Colors.grey[600],
-            ),
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+            prefixIcon: Icon(icon, color: focusNode.hasFocus ? Colors.black : Colors.grey[600]),
+            contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.r),
-              borderSide: BorderSide(
-                width: 2.w,
-                color: Colors.grey,
-              ),
+              borderSide: BorderSide(width: 2.w, color: Colors.grey),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.r),
-              borderSide: BorderSide(
-                width: 2.w,
-                color: Colors.black,
-              ),
+              borderSide: BorderSide(width: 2.w, color: Colors.black),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(5.r),
+              borderSide: BorderSide(width: 2.w, color: Colors.red),
             ),
           ),
         ),
@@ -104,15 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: GestureDetector(
         onTap: () {
           // Handle password reset
-          // Navigate to password reset screen or show dialog
         },
         child: Text(
           'Forgot password?',
-          style: TextStyle(
-            fontSize: 13.sp,
-            color: Colors.blue,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 13.sp, color: Colors.blue, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -123,18 +104,15 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: InkWell(
         onTap: () async {
-          if (_isLoading) return; // Prevent multiple taps
-
           setState(() {
-            _errorMessage = ''; // Clear previous error message
-            _isLoading = true; // Set loading state
+            _errorMessage = '';
+            _isLoading = true;
           });
 
-          // Validate input
           if (email.text.isEmpty || password.text.isEmpty) {
             setState(() {
               _errorMessage = 'Please enter both email and password';
-              _isLoading = false; // Reset loading state
+              _isLoading = false;
             });
             return;
           }
@@ -144,29 +122,30 @@ class _LoginScreenState extends State<LoginScreen> {
               email: email.text,
               password: password.text,
             );
-            // Show success message
+
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Login successful!'),
-                backgroundColor:
-                    Colors.green, // Customize the background color here
+                backgroundColor: Colors.green,
               ),
             );
+
             // Navigate to another screen if needed
-          } on FirebaseException catch (e) {
+          } on exceptions catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(e.code),
-                backgroundColor:
-                    Colors.red, // Customize the background color here
+                content: Text(e.message),
+                backgroundColor: Colors.red,
               ),
             );
+            setState(() {
+              _errorMessage = e.message;
+            });
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Errro in login"),
-                backgroundColor:
-                    Colors.redAccent, // Customize the background color here
+                content: Text('An unexpected error occurred'),
+                backgroundColor: Colors.redAccent,
               ),
             );
             setState(() {
@@ -174,7 +153,7 @@ class _LoginScreenState extends State<LoginScreen> {
             });
           } finally {
             setState(() {
-              _isLoading = false; // Reset loading state
+              _isLoading = false;
             });
           }
         },
@@ -187,17 +166,11 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: _isLoading
-              ? CircularProgressIndicator(
-                  color: Colors.white,
-                )
+              ? CircularProgressIndicator(color: Colors.white)
               : Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 23.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+            'Login',
+            style: TextStyle(fontSize: 23.sp, color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );
@@ -211,19 +184,13 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Text(
             "Don't have an account?  ",
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 14.sp, color: Colors.grey),
           ),
           GestureDetector(
             onTap: widget.show,
             child: Text(
               "Sign up ",
-              style: TextStyle(
-                  fontSize: 15.sp,
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15.sp, color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ),
         ],

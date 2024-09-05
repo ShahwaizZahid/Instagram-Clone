@@ -16,11 +16,19 @@ class Authentication {
   }) async {
     try {
       await _auth.signInWithEmailAndPassword(
-          email: email.trim(), password: password.trim());
+        email: email.trim(),
+        password: password.trim(),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase authentication errors
+      throw exceptions(e.message ?? 'An authentication error occurred.');
     } on FirebaseException catch (e) {
-      throw exceptions(e.message.toString());
+      throw exceptions('Firebase error: ${e.message}');
+    } catch (e) {
+      throw exceptions('An unexpected error occurred: $e');
     }
   }
+
 
   Future<void> Signup({
     required String email,

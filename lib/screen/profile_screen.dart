@@ -126,58 +126,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      SizedBox(width: 35.w),
-                      Text(
-                        post_lenght.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                        ),
+                      SizedBox(width: 20.w,),
+                      Column(
+                        children: [
+                          Text(
+                            post_lenght.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          Text(
+                            'Posts',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 53.w),
-                      Text(
-                        user.followers.length.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                        ),
+                      SizedBox(width: 25.w,),
+
+                      Column(
+                        children: [
+                          Text(
+                            user.followers.length.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          Text(
+                            'Followers',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 70.w),
-                      Text(
-                        user.following.length.toString(),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16.sp,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 30.w),
-                      Text(
-                        'Posts',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                        ),
-                      ),
-                      SizedBox(width: 25.w),
-                      Text(
-                        'Followers',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                        ),
-                      ),
-                      SizedBox(width: 19.w),
-                      Text(
-                        'Following',
-                        style: TextStyle(
-                          fontSize: 13.sp,
-                        ),
+                      SizedBox(width: 25.w,),
+
+                      Column(
+                        children: [
+                          Text(
+                            user.following.length.toString(),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          Text(
+                            'Following',
+                            style: TextStyle(
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
