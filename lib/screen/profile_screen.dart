@@ -106,9 +106,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget Head(Usermodel user) {
     return Container(
-      padding: EdgeInsets.only(bottom: 5.h),
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,68 +119,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 13.w, vertical: 10.h),
                 child: ClipOval(
                   child: SizedBox(
-                    height: 80.h,
                     width: 80.w,
-                    child: Container(child: CachedImage(user.profile)),
+                    height: 80.h,
+                    child: CachedImage(user.profile),
                   ),
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
-                      SizedBox(
-                        width: 17.w,
-                      ),
+                      SizedBox(width: 35.w),
                       Text(
-                        '0',
+                        post_lenght.toString(),
                         style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                        ),
                       ),
-                      SizedBox(
-                        width: 53.w,
-                      ),
+                      SizedBox(width: 53.w),
                       Text(
                         user.followers.length.toString(),
                         style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                        ),
                       ),
-                      SizedBox(
-                        width: 53.w,
-                      ),
+                      SizedBox(width: 70.w),
                       Text(
                         user.following.length.toString(),
                         style: TextStyle(
-                            fontSize: 16.sp, fontWeight: FontWeight.bold),
-                      )
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: 30.w,
-                      ),
+                      SizedBox(width: 30.w),
                       Text(
                         'Posts',
                         style: TextStyle(
-                            fontSize: 13.sp, fontWeight: FontWeight.bold),
+                          fontSize: 13.sp,
+                        ),
                       ),
-                      SizedBox(
-                        width: 30.w,
-                      ),
+                      SizedBox(width: 25.w),
                       Text(
-                        'Follower',
+                        'Followers',
                         style: TextStyle(
-                            fontSize: 13.sp, fontWeight: FontWeight.bold),
+                          fontSize: 13.sp,
+                        ),
                       ),
-                      SizedBox(
-                        width: 30.w,
-                      ),
+                      SizedBox(width: 19.w),
                       Text(
                         'Following',
                         style: TextStyle(
-                            fontSize: 13.sp, fontWeight: FontWeight.bold),
-                      )
+                          fontSize: 13.sp,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -188,78 +186,126 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
+            padding: EdgeInsets.symmetric(horizontal: 15.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   user.username,
-                  style:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 12.sp),
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
+                SizedBox(height: 5.h),
                 Text(
                   user.bio,
-                  style:
-                      TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp),
-                )
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
               ],
             ),
           ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: GestureDetector(
-              onTap: () {
-    if (yourse == false) {
-    Firebase_Firestor().flollow(uid: widget.Uid);
-    setState(() {
-    follow = true;
-    });
-    }
-    },
-              child: Container(
-                alignment: Alignment.center,
-                height: 20.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color:yourse ? Colors.white: Colors.blue,
+          SizedBox(height: 20.h),
+          Visibility(
+            visible: !follow,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 13.w),
+              child: GestureDetector(
+                onTap: () {
+                  if (yourse == false) {
+                    Firebase_Firestor().flollow(uid: widget.Uid);
+                    setState(() {
+                      follow = true;
+                    });
+                  }
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 30.h,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: yourse ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(5.r),
-                    border: Border.all(color: Colors.grey.shade400)),
-                child:yourse
-                    ? const Text('Edit Your Profile')
-                    : const Text(
-                  'Follow',
-                  style: TextStyle(color: Colors.white),
+                    border: Border.all(
+                        color: yourse ? Colors.grey.shade400 : Colors.blue),
+                  ),
+                  child: yourse
+                      ? Text('Edit Your Profile')
+                      : Text(
+                    'Follow',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
           ),
-          
+          Visibility(
+            visible: follow,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 13.w),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Firebase_Firestor().flollow(uid: widget.Uid);
+                        setState(() {
+                          follow = false;
+                        });
+                      },
+                      child: Container(
+                          alignment: Alignment.center,
+                          height: 30.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5.r),
+                            border: Border.all(color: Colors.grey.shade200),
+                          ),
+                          child: Text('Unfollow')),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: 30.h,
+                      width: 100.w,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(5.r),
+                        border: Border.all(color: Colors.grey.shade200),
+                      ),
+                      child: Text(
+                        'Message',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 5.h),
           SizedBox(
             width: double.infinity,
-            height: 35.h,
+            height: 30.h,
             child: const TabBar(
-              labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
-              indicatorColor:
-                  Colors.black, // Color of the underline for the selected tab
-              indicatorWeight: 2.5, // Thickness of the underline
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelPadding: EdgeInsets.symmetric(vertical: 8.0),
+              labelColor: Colors.black,
+              indicatorColor: Colors.black,
               tabs: [
                 Icon(Icons.grid_on),
                 Icon(Icons.video_collection),
-                Icon(Icons.person)
+                Icon(Icons.person),
               ],
             ),
           ),
           SizedBox(
-            height: 10.h,
+            height: 5.h,
           )
         ],
       ),
