@@ -132,18 +132,19 @@ class _PostWidgetState extends State<PostWidget> {
                   SizedBox(width: 17.w),
                   GestureDetector(
                     onTap: () {
-                      showBottomSheet(
-                        backgroundColor: Colors.transparent,
+                      showModalBottomSheet(
                         context: context,
+                        isScrollControlled: true, // To ensure the modal adjusts to the keyboard
+                        backgroundColor: Colors.transparent,
                         builder: (context) {
                           return Padding(
                             padding: EdgeInsets.only(
-                              bottom: MediaQuery.of(context).viewInsets.bottom,
+                              bottom: MediaQuery.of(context).viewInsets.bottom, // Adjust for keyboard
                             ),
                             child: DraggableScrollableSheet(
-                              maxChildSize: 0.6,
-                              initialChildSize: 0.6,
-                              minChildSize: 0.2,
+                              maxChildSize: 0.9, // Adjust this based on the size you need
+                              initialChildSize: 0.6, // Adjust starting size
+                              minChildSize: 0.4, // Minimum size of the scrollable sheet
                               builder: (context, scrollController) {
                                 return Comment(
                                   'posts',
@@ -160,6 +161,7 @@ class _PostWidgetState extends State<PostWidget> {
                       height: 28.h,
                     ),
                   ),
+
                   SizedBox(width: 17.w),
                   Image.asset(
                     'assets/images/send.jpg',

@@ -195,7 +195,7 @@ class _ReelsItemState extends State<ReelsItem> {
               ),
               SizedBox(height: 3.h),
               FutureBuilder<int>(
-                future: getCommentCount(), // Call the method that fetches comment count
+                future: getCommentCount(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Text(
