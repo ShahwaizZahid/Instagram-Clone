@@ -213,22 +213,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 15.w),
-            child: Container(
-              alignment: Alignment.center,
-              height: 20.h,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color:yourse ? Colors.grey.shade400: Colors.blue,
-                  borderRadius: BorderRadius.circular(5.r),
-                  border: Border.all(color: Colors.grey.shade400)),
-              child:yourse
-                  ? const Text('Edit Your Profile')
-                  : const Text(
-                'Follow',
-                style: TextStyle(color: Colors.white),
+            child: GestureDetector(
+              onTap: () {
+    if (yourse == false) {
+    Firebase_Firestor().flollow(uid: widget.Uid);
+    setState(() {
+    follow = true;
+    });
+    }
+    },
+              child: Container(
+                alignment: Alignment.center,
+                height: 20.h,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color:yourse ? Colors.white: Colors.blue,
+                    borderRadius: BorderRadius.circular(5.r),
+                    border: Border.all(color: Colors.grey.shade400)),
+                child:yourse
+                    ? const Text('Edit Your Profile')
+                    : const Text(
+                  'Follow',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),
+          
           SizedBox(
             width: double.infinity,
             height: 35.h,
