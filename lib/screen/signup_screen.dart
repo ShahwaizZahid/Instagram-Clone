@@ -1,18 +1,14 @@
 import 'dart:io';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../data/firebase_services/firebase_auth.dart';
-import '../data/firebase_services/storage.dart';
-import '../util/dialog.dart';
 import '../util/exception.dart';
 import '../util/imagepicker.dart';
 
 class SignupScreen extends StatefulWidget {
   final VoidCallback show;
-  SignupScreen(this.show, {super.key});
-
+  const SignupScreen(this.show, {super.key});
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
@@ -35,72 +31,84 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            children: [
-              SizedBox(height: 100.h),
-              Center(child: Image.asset('assets/images/logo.jpg')),
-              SizedBox(height: 60.h),
-              GestureDetector(
-                onTap: () async {
-                  File _imagefilee = await ImagePickerr().uploadImage('gallery');
-                  setState(() {
-                    _imageFile = _imagefilee;
-                  });
-                },
-                child: CircleAvatar(
-                  radius: 36.r,
-                  backgroundColor: Colors.grey,
-                  child: _imageFile == null
-                      ? CircleAvatar(
-                    radius: 34.r,
-                    backgroundImage: AssetImage('assets/images/person.png'),
-                    backgroundColor: Colors.grey.shade200,
-                  )
-                      : CircleAvatar(
-                    radius: 34.r,
-                    backgroundImage: Image.file(
-                      _imageFile!,
-                      fit: BoxFit.cover,
-                    ).image,
-                    backgroundColor: Colors.grey.shade200,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              children: [
+                SizedBox(height: 60.h),
+                Center(child: Image.asset('assets/images/logo.jpg')),
+                SizedBox(height: 40.h),
+                GestureDetector(
+                  onTap: () async {
+                    File _imagefilee =
+                        await ImagePickerr().uploadImage('gallery');
+                    setState(() {
+                      _imageFile = _imagefilee;
+                    });
+                  },
+                  child: CircleAvatar(
+                    radius: 45.r,
+                    backgroundColor: Colors.grey,
+                    child: _imageFile == null
+                        ? CircleAvatar(
+                            radius: 43.r,
+                            backgroundImage:
+                                const AssetImage('assets/images/person.png'),
+                            backgroundColor: Colors.grey.shade200,
+                          )
+                        : CircleAvatar(
+                            radius: 43.r,
+                            backgroundImage: Image.file(
+                              _imageFile!,
+                              fit: BoxFit.cover,
+                            ).image,
+                            backgroundColor: Colors.grey.shade200,
+                          ),
                   ),
                 ),
-              ),
-              SizedBox(height: 50.h),
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Textfild(email, email_F, 'Email', Icons.email, validateEmail),
-                    SizedBox(height: 15.h),
-                    Textfild(username, username_F, 'Username', Icons.person, validateUsername),
-                    SizedBox(height: 15.h),
-                    Textfild(bio, bio_F, 'Bio', Icons.abc, validateBio),
-                    SizedBox(height: 15.h),
-                    Textfild(password, password_F, 'Password', Icons.lock, validatePassword),
-                    SizedBox(height: 15.h),
-                    Textfild(passwordConfirme, passwordConfirme_F, 'Confirm Password', Icons.lock, validateConfirmPassword),
-                    SizedBox(height: 20.h),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : SignupButton(),
-                    SizedBox(height: 10.h),
-                    HaveAccount(),
-                  ],
+                SizedBox(height: 50.h),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextfieldWidget(
+                          email, email_F, 'Email', Icons.email, validateEmail),
+                      SizedBox(height: 15.h),
+                      TextfieldWidget(username, username_F, 'Username',
+                          Icons.person, validateUsername),
+                      SizedBox(height: 15.h),
+                      TextfieldWidget(password, password_F, 'Password',
+                          Icons.lock, validatePassword),
+                      SizedBox(height: 15.h),
+                      TextfieldWidget(
+                          passwordConfirme,
+                          passwordConfirme_F,
+                          'Confirm Password',
+                          Icons.lock,
+                          validateConfirmPassword),
+                      SizedBox(height: 20.h),
+                      _isLoading
+                          ? const CircularProgressIndicator()
+                          : SignupButton(),
+                      SizedBox(height: 10.h),
+                      HaveAccount(),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget Textfild(TextEditingController controll, FocusNode focusNode, String typename, IconData icon, String? Function(String?)? validator) {
+  Widget TextfieldWidget(TextEditingController controll, FocusNode focusNode,
+      String typename, IconData icon, String? Function(String?)? validator) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: TextFormField(
@@ -113,7 +121,8 @@ class _SignupScreenState extends State<SignupScreen> {
             icon,
             color: focusNode.hasFocus ? Colors.black : Colors.grey[600],
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+          contentPadding:
+              EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.r),
             borderSide: BorderSide(
@@ -126,6 +135,13 @@ class _SignupScreenState extends State<SignupScreen> {
             borderSide: BorderSide(
               width: 2.w,
               color: Colors.black,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(5.r),
+            borderSide: BorderSide(
+              width: 2.w,
+              color: Colors.red,
             ),
           ),
         ),
@@ -152,25 +168,48 @@ class _SignupScreenState extends State<SignupScreen> {
                 passwordConfirme: passwordConfirme.text,
                 username: username.text,
                 bio: bio.text,
-                profile: _imageFile ?? File(''),
+                profile: _imageFile,
               );
 
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
+                const SnackBar(
                   content: Text('Signup successful!'),
-                  backgroundColor: Colors.green, // Customize the background color here
+                  backgroundColor: Colors.green,
                   duration: Duration(seconds: 3),
                 ),
               );
 
-              // Optionally navigate to another screen or clear the form
-              // Navigator.pushReplacementNamed(context, '/login');
-            } on exceptions catch (e) {
-              dialogBuilder(context, e.message);
-            } finally {
+              // Clear form fields
+              email.clear();
+              password.clear();
+              passwordConfirme.clear();
+              username.clear();
+              bio.clear();
               setState(() {
-                _isLoading = false;
+                _imageFile = null;
               });
+            } on exceptions catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(e.message),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 3),
+                ),
+              );
+            } catch (e) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('An unexpected error occurred'),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 3),
+                ),
+              );
+            } finally {
+              setState(
+                () {
+                  _isLoading = false;
+                },
+              );
             }
           }
         },
@@ -182,14 +221,16 @@ class _SignupScreenState extends State<SignupScreen> {
             color: Colors.black,
             borderRadius: BorderRadius.circular(10.r),
           ),
-          child: Text(
-            'Signup',
-            style: TextStyle(
-              fontSize: 23.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          child: _isLoading
+              ? const CircularProgressIndicator()
+              : Text(
+                  'Signup',
+                  style: TextStyle(
+                    fontSize: 23.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ),
     );
@@ -235,14 +276,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please enter your username';
-    }
-    // Add more validation rules if needed
-    return null;
-  }
-
-  String? validateBio(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter your bio';
     }
     // Add more validation rules if needed
     return null;

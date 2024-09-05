@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:isntragram_clone/data/firebase_services/firebase_auth.dart';
 import 'package:isntragram_clone/widgets/post_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +15,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+
+  Future<void> signOut() async {
+    try {
+      await _auth.signOut();
+      print("User signed out");
+    } catch (e) {
+      print("Error signing out: $e");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         leading: Image.asset('assets/images/camera.jpg'),
         actions: [
+          IconButton(onPressed: (){signOut();}, icon: Icon(Icons.logout)),
           const Icon(
             Icons.favorite_border_outlined,
             color: Colors.black,

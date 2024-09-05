@@ -25,28 +25,31 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 100.h,
-              width: 96.w,
-            ),
-            Center(
-              child: Image.asset('assets/images/logo.jpg'),
-            ),
-            SizedBox(height: 120.h),
-            _buildTextField(email, email_F, 'Email', Icons.email),
-            SizedBox(height: 15.h),
-            _buildTextField(password, password_F, 'Password', Icons.lock),
-            SizedBox(height: 15.h),
-            _buildForgetPassword(),
-            SizedBox(height: 15.h),
-            _buildLoginButton(),
-            SizedBox(height: 15.h),
-            _buildHaveAccount()
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 100.h,
+                width: 96.w,
+              ),
+              Center(
+                child: Image.asset('assets/images/logo.jpg'),
+              ),
+              SizedBox(height: 120.h),
+              _buildTextField(email, email_F, 'Email', Icons.email),
+              SizedBox(height: 15.h),
+              _buildTextField(password, password_F, 'Password', Icons.lock),
+              SizedBox(height: 15.h),
+              _buildForgetPassword(),
+              SizedBox(height: 15.h),
+              _buildLoginButton(),
+              SizedBox(height: 15.h),
+              _buildHaveAccount()
+            ],
+          ),
         ),
       ),
     );
@@ -73,7 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
               icon,
               color: focusNode.hasFocus ? Colors.black : Colors.grey[600],
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.r),
               borderSide: BorderSide(
@@ -142,23 +146,27 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             // Show success message
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Login successful!'),
-                backgroundColor: Colors.green, // Customize the background color here
+              SnackBar(
+                content: Text('Login successful!'),
+                backgroundColor:
+                    Colors.green, // Customize the background color here
               ),
             );
             // Navigate to another screen if needed
-          } on FirebaseException catch(e){
+          } on FirebaseException catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(e.code),
-                backgroundColor: Colors.red, // Customize the background color here
+              SnackBar(
+                content: Text(e.code),
+                backgroundColor:
+                    Colors.red, // Customize the background color here
               ),
             );
-
-          }catch (e) {
+          } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Errro in login"),
-                backgroundColor: Colors.redAccent
-                , // Customize the background color here
+              SnackBar(
+                content: Text("Errro in login"),
+                backgroundColor:
+                    Colors.redAccent, // Customize the background color here
               ),
             );
             setState(() {
@@ -180,16 +188,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: _isLoading
               ? CircularProgressIndicator(
-            color: Colors.white,
-          )
+                  color: Colors.white,
+                )
               : Text(
-            'Login',
-            style: TextStyle(
-              fontSize: 23.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 23.sp,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
         ),
       ),
     );
