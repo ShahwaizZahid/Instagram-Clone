@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_vlc_player/flutter_vlc_player.dart';
 import 'package:isntragram_clone/util/image_cached.dart';
-import 'package:video_player/video_player.dart';
-
 import '../data/firebase_services/firestore.dart';
 import 'comment.dart';
 import 'like_animation.dart';
@@ -124,10 +122,8 @@ class _ReelsItemState extends State<ReelsItem> {
           top: 430.h,
           right: 15.w,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               LikeAnimation(
-                isAnimating: widget.snapshot['like'].contains(user),
                 child: IconButton(
                   onPressed: () {
                     Firebase_Firestor().like(
@@ -142,15 +138,19 @@ class _ReelsItemState extends State<ReelsItem> {
                         : Icons.favorite_border,
                     color: widget.snapshot['like'].contains(user)
                         ? Colors.red
-                        : Colors.black,
+                        : Colors.white,
                     size: 24.w,
                   ),
                 ),
+                isAnimating: widget.snapshot['like'].contains(user),
               ),
               SizedBox(height: 3.h),
               Text(
-    widget.snapshot['like'].length.toString(),
-                style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                widget.snapshot['like'].length.toString(),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.white,
+                ),
               ),
               SizedBox(height: 15.h),
               GestureDetector(
@@ -168,10 +168,7 @@ class _ReelsItemState extends State<ReelsItem> {
                           initialChildSize: 0.6,
                           minChildSize: 0.2,
                           builder: (context, scrollController) {
-                            return Comment(
-                              'reels',
-                              widget.snapshot['postId'],
-                            );
+                            return Comment('reels', widget.snapshot['postId']);
                           },
                         ),
                       );
@@ -187,7 +184,10 @@ class _ReelsItemState extends State<ReelsItem> {
               SizedBox(height: 3.h),
               Text(
                 '0',
-                style: TextStyle(fontSize: 12.sp, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.white,
+                ),
               ),
               SizedBox(height: 15.h),
               Icon(
@@ -198,8 +198,11 @@ class _ReelsItemState extends State<ReelsItem> {
               SizedBox(height: 3.h),
               Text(
                 '0',
-                style: TextStyle(fontSize: 12.sp, color: Colors.white),
-              )
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Colors.white,
+                ),
+              ),
             ],
           ),
         ),

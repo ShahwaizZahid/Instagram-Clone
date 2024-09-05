@@ -8,7 +8,9 @@ import '../data/firebase_services/firestore.dart';
 import '../util/image_cached.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  String Uid;
+  ProfileScreen({super.key, required this.Uid});
+
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -16,6 +18,32 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  int post_lenght = 0;
+  bool yourse = false;
+  List following = [];
+  bool follow = false;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getdata();
+    if (widget.Uid == _auth.currentUser!.uid) {
+      setState(() {
+        yourse = true;
+      });
+    }
+  }
+  getdata() async {
+    DocumentSnapshot snap = await _firebaseFirestore
+        .collection('users')
+        .doc(_auth.currentUser!.uid)
+        .get();
+    following = (snap.data()! as dynamic)['following'];
+    if (following.contains(widget.Uid)) {
+      setState(() {
+        follow = true;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             slivers: [
               SliverToBoxAdapter(
                 child: FutureBuilder(
-                  future: Firebase_Firestor().getUser(),
+                  future: Firebase_Firestor().getUser(uidd: widget.Uid),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData) {
                       return const Center(child: CircularProgressIndicator());
@@ -39,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               StreamBuilder(
                 stream: _firebaseFirestore
                     .collection('posts')
-                    .where('uid', isEqualTo: _auth.currentUser?.uid)
+                    .where('uid', isEqualTo: widget.Uid)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -190,10 +218,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 20.h,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.white,
+                  color:yourse ? Colors.grey.shade400: Colors.blue,
                   borderRadius: BorderRadius.circular(5.r),
                   border: Border.all(color: Colors.grey.shade400)),
-              child: const Text("Edit Your Profile"),
+              child:yourse
+                  ? const Text('Edit Your Profile')
+                  : const Text(
+                'Follow',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
           SizedBox(

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:isntragram_clone/screen/post_screen.dart';
+import 'package:isntragram_clone/screen/profile_screen.dart';
 
 import '../util/image_cached.dart';
 
@@ -26,6 +28,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         child: CustomScrollView(
           slivers: [
             SearchBox(),
+            if (show)
               StreamBuilder<QuerySnapshot>(
                 stream: _firebaseFirestore.collection('posts').snapshots(),
                 builder: (context, snapshot) {
@@ -44,7 +47,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => PostScreen(snap.data(),),
+                                builder: (context) => PostScreen(
+                                  snap.data(),
+                                ),
                               ),
                             );
                           },
@@ -96,17 +101,25 @@ class _ExploreScreenState extends State<ExploreScreen> {
                           return Column(
                             children: [
                               SizedBox(height: 10.h),
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 23.r,
-                                    backgroundImage: NetworkImage(
-                                      snap['profile'],
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        ProfileScreen(Uid: snap.id),
+                                  ));
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 23.r,
+                                      backgroundImage: NetworkImage(
+                                        snap['profile'],
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 15.w),
-                                  Text(snap['username']),
-                                ],
+                                    SizedBox(width: 15.w),
+                                    Text(snap['username']),
+                                  ],
+                                ),
                               ),
                             ],
                           );

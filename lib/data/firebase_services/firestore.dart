@@ -31,11 +31,11 @@ class Firebase_Firestor {
     return true;
   }
 
-  Future<Usermodel> getUser({String? UID}) async {
+  Future<Usermodel> getUser({String? uidd}) async {
     try {
       final user = await _firebaseFirestore
           .collection('users')
-          .doc(UID != null ? UID : _auth.currentUser!.uid)
+          .doc(uidd  ?? _auth.currentUser!.uid)
           .get();
       final snapuser = user.data()!;
       return Usermodel(
