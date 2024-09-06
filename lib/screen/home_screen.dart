@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:isntragram_clone/data/firebase_services/firebase_auth.dart';
 import 'package:isntragram_clone/widgets/post_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -19,11 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      print("User signed out");
     } catch (e) {
       print("Error signing out: $e");
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
         title: SizedBox(
           width: 105.w,
           height: 28.h,
-          child: Image.asset('assets/images/instagram.jpg'),
+          child: Image.asset('assets/images/instagram.png'),
         ),
-        leading: Image.asset('assets/images/camera.jpg'),
+        leading: Image.asset('assets/images/camera.png'),
         actions: [
           IconButton(onPressed: (){signOut();}, icon: Icon(Icons.logout)),
           const Icon(
@@ -45,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
             color: Colors.black,
             size: 25,
           ),
-          Image.asset('assets/images/send.jpg'),
+          Image.asset('assets/images/send.png'),
         ],
         backgroundColor: const Color(0xffFAFAFA),
       ),
@@ -75,14 +74,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // Future<void> signOut() async {
-  //   try {
-  //     await _auth.signOut();
-  //     print("User successfully logged out.");
-  //   } catch (e) {
-  //     print("Error signing out: $e");
-  //   }
-  // }
 }
