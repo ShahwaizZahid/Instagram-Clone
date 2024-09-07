@@ -375,33 +375,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget Reels() {
-    return  GridView.builder(
+    return GridView.builder(
       shrinkWrap: true,
-      itemCount:PostedVideoUrls.length,
+      itemCount: PostedVideoUrls.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          mainAxisExtent: 250,
-          crossAxisSpacing: 3.w,
-          mainAxisSpacing: 5.h),
+        crossAxisCount: 3,
+        mainAxisExtent: 250,
+        crossAxisSpacing: 3.w,
+        mainAxisSpacing: 5.h,
+      ),
       itemBuilder: (BuildContext context, int index) {
+        final videoUrl = PostedVideoUrls[index];
+        final VlcPlayerController controller = VlcPlayerController.network(
+          videoUrl,
+          autoPlay: true,
+          options: VlcPlayerOptions(),
+        );
+
+        // Set the volume to 0
+
+
         return GestureDetector(
           // onTap: () {
-          //   setState(() {
-          //     indexx = index;
-          //     _file = path[index];
-          //
-          //     // Navigate to the ReelEditScreen and pass the selected video file
-          //     Navigator.of(context).push(
-          //       MaterialPageRoute(
-          //         builder: (context) => ReelsEditeScreen(_file!),
-          //       ),
-          //     );
-          //   });
+          //   Navigator.of(context).push(
+          //     MaterialPageRoute(
+          //       builder: (context) => ReelsEditeScreen(videoUrl),
+          //     ),
+          //   );
           // },
+          child: Container(
+            margin: EdgeInsets.all(4.0),
+            child: VlcPlayer(
+              controller: controller,
 
-          child:Text(PostedVideoUrls[index]),
+              aspectRatio: 16 / 9,
+              placeholder: Center(child: CircularProgressIndicator()),
+              // Add more customization here if needed
+            ),
+          ),
         );
       },
     );
   }
+
 }
