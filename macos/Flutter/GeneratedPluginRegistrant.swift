@@ -13,7 +13,7 @@ import firebase_storage
 import package_info_plus
 import path_provider_foundation
 import photo_manager
-import sqflite
+import sqflite_darwin
 import video_player_avfoundation
 import wakelock_plus
 
