@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../data/firebase_services/firebase_auth.dart';
@@ -5,7 +7,7 @@ import '../util/exception.dart';
 
 class LoginScreen extends StatefulWidget {
   final VoidCallback show;
-  LoginScreen(this.show, {super.key});
+  const LoginScreen(this.show, {super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -18,7 +20,6 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode password_F = FocusNode();
 
   bool _isLoading = false;
-  String _errorMessage = '';
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, FocusNode focusNode, String hintText, IconData icon) {
+  Widget _buildTextField(TextEditingController controller, FocusNode focusNode,
+      String hintText, IconData icon) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w),
       child: Container(
@@ -64,8 +66,10 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: hintText == 'Password',
           decoration: InputDecoration(
             hintText: hintText,
-            prefixIcon: Icon(icon, color: focusNode.hasFocus ? Colors.black : Colors.grey[600]),
-            contentPadding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+            prefixIcon: Icon(icon,
+                color: focusNode.hasFocus ? Colors.black : Colors.grey[600]),
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.r),
               borderSide: BorderSide(width: 2.w, color: Colors.grey),
@@ -93,7 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Text(
           'Forgot password?',
-          style: TextStyle(fontSize: 13.sp, color: Colors.blue, fontWeight: FontWeight.w500),
+          style: TextStyle(
+              fontSize: 13.sp, color: Colors.blue, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -105,13 +110,11 @@ class _LoginScreenState extends State<LoginScreen> {
       child: InkWell(
         onTap: () async {
           setState(() {
-            _errorMessage = '';
             _isLoading = true;
           });
 
           if (email.text.isEmpty || password.text.isEmpty) {
             setState(() {
-              _errorMessage = 'Please enter both email and password';
               _isLoading = false;
             });
             return;
@@ -124,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
 
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('Login successful!'),
                 backgroundColor: Colors.green,
               ),
@@ -138,19 +141,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 backgroundColor: Colors.red,
               ),
             );
-            setState(() {
-              _errorMessage = e.message;
-            });
+            setState(() {});
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
+              const SnackBar(
                 content: Text('An unexpected error occurred'),
                 backgroundColor: Colors.redAccent,
               ),
             );
-            setState(() {
-              _errorMessage = e.toString();
-            });
+            setState(() {});
           } finally {
             setState(() {
               _isLoading = false;
@@ -166,11 +165,14 @@ class _LoginScreenState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(10.r),
           ),
           child: _isLoading
-              ? CircularProgressIndicator(color: Colors.white)
+              ? const CircularProgressIndicator(color: Colors.white)
               : Text(
-            'Login',
-            style: TextStyle(fontSize: 23.sp, color: Colors.white, fontWeight: FontWeight.bold),
-          ),
+                  'Login',
+                  style: TextStyle(
+                      fontSize: 23.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
         ),
       ),
     );
@@ -190,7 +192,10 @@ class _LoginScreenState extends State<LoginScreen> {
             onTap: widget.show,
             child: Text(
               "Sign up ",
-              style: TextStyle(fontSize: 15.sp, color: Colors.blue, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 15.sp,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold),
             ),
           ),
         ],

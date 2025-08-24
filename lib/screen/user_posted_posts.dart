@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:isntragram_clone/screen/post_screen.dart';
 import '../util/image_cached.dart';
 
 class UserPostedPosts extends StatefulWidget {
+  // ignore: non_constant_identifier_names
   final String Uid;
 
-  UserPostedPosts({super.key, required this.Uid});
+  const UserPostedPosts({super.key, required this.Uid});
 
   @override
   State<UserPostedPosts> createState() => _UserPostedPostsState();
 }
 
 class _UserPostedPostsState extends State<UserPostedPosts> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
   @override

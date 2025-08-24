@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors_in_immutables, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,11 +75,11 @@ class _UserPostedReelsState extends State<UserPostedReels> {
             // Add functionality for tapping if needed
           },
           child: Container(
-            margin: EdgeInsets.all(4.0),
+            margin: const EdgeInsets.all(4.0),
             child: VlcPlayer(
               controller: controller,
               aspectRatio: 16 / 9,
-              placeholder: Center(child: CircularProgressIndicator()),
+              placeholder: const Center(child: CircularProgressIndicator()),
               // Add more customization here if needed
             ),
           ),

@@ -24,9 +24,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final PermissionState ps = await PhotoManager.requestPermissionExtend();
     if (ps.isAuth) {
       List<AssetPathEntity> album =
-      await PhotoManager.getAssetPathList(type: RequestType.image);
+          await PhotoManager.getAssetPathList(type: RequestType.image);
       List<AssetEntity> media =
-      await album[0].getAssetListPaged(page: currentPage, size: 60);
+          await album[0].getAssetListPaged(page: currentPage, size: 60);
 
       for (var asset in media) {
         if (asset.type == AssetType.image) {
@@ -41,21 +41,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
       for (var asset in media) {
         temp.add(
           FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(200, 200)),
+            future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done)
-                return Container(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Image.memory(
-                          snapshot.data!,
-                          fit: BoxFit.cover,
-                        ),
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.memory(
+                        snapshot.data!,
+                        fit: BoxFit.cover,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
+              }
 
               return Container();
             },
@@ -78,6 +77,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   int indexx = 0;
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -110,61 +110,58 @@ class _AddPostScreenState extends State<AddPostScreen> {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 375.h,
-                  child: GridView.builder(
-                    itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 1,
-                      mainAxisSpacing: 1,
-                      crossAxisSpacing: 1,
-                    ),
-                    itemBuilder: (context, index) {
-                      return _mediaList[indexx];
-                    },
-                  ),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 40.h,
-                  color: Colors.white,
-                  child: Row(
-                    children: [
-                      SizedBox(width: 10.w),
-                      Text(
-                        'Recent',
-                        style: TextStyle(
-                            fontSize: 15.sp, fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  itemCount: _mediaList.length,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 375.h,
+                child: GridView.builder(
+                  itemCount: _mediaList.isEmpty ? _mediaList.length : 1,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
+                    crossAxisCount: 1,
                     mainAxisSpacing: 1,
-                    crossAxisSpacing: 2,
+                    crossAxisSpacing: 1,
                   ),
                   itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          indexx = index;
-                          _file = path[index];
-                        });
-                      },
-                      child: _mediaList[index],
-                    );
+                    return _mediaList[indexx];
                   },
                 ),
-              ],
-            ),
+              ),
+              Container(
+                width: double.infinity,
+                height: 40.h,
+                color: Colors.white,
+                child: Row(
+                  children: [
+                    SizedBox(width: 10.w),
+                    Text(
+                      'Recent',
+                      style: TextStyle(
+                          fontSize: 15.sp, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+              GridView.builder(
+                shrinkWrap: true,
+                itemCount: _mediaList.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 1,
+                  crossAxisSpacing: 2,
+                ),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        indexx = index;
+                        _file = path[index];
+                      });
+                    },
+                    child: _mediaList[index],
+                  );
+                },
+              ),
+            ],
           ),
         ),
       ),

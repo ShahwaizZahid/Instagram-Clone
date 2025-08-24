@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,8 +19,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   File? _image;
   final ImagePicker _picker = ImagePicker();
 
@@ -41,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => AddPostTextScreen(_image!),
         ));
-        ;
       });
     }
   }
@@ -60,12 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Image.asset('assets/images/instagram.png'),
         ),
         leading: GestureDetector(
-            onTap: (){
-_openCamera();
+            onTap: () {
+              _openCamera();
             },
             child: Image.asset('assets/images/camera.png')),
         actions: [
-          IconButton(onPressed: (){signOut();}, icon: Icon(Icons.logout)),
+          IconButton(
+              onPressed: () {
+                signOut();
+              },
+              icon: const Icon(Icons.logout)),
           const Icon(
             Icons.favorite_border_outlined,
             color: Colors.black,
@@ -85,14 +90,14 @@ _openCamera();
             builder: (context, snapshot) {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
-                      (context, index) {
+                  (context, index) {
                     if (!snapshot.hasData) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     }
                     return PostWidget(snapshot.data!.docs[index].data());
                   },
                   childCount:
-                  snapshot.data == null ? 0 : snapshot.data!.docs.length,
+                      snapshot.data == null ? 0 : snapshot.data!.docs.length,
                 ),
               );
             },

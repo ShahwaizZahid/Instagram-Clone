@@ -60,6 +60,7 @@ class _AddScreenState extends State<AddScreen> {
             width: 120.w,
             height: 30.h,
             decoration: BoxDecoration(
+              // ignore: deprecated_member_use
               color: Colors.black.withOpacity(0.6),
               borderRadius: BorderRadius.circular(20.r),
             ),

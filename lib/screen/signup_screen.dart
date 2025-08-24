@@ -1,5 +1,6 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../data/firebase_services/firebase_auth.dart';
@@ -44,10 +45,10 @@ class _SignupScreenState extends State<SignupScreen> {
                 SizedBox(height: 40.h),
                 GestureDetector(
                   onTap: () async {
-                    File _imagefilee =
+                    File imagefilee =
                         await ImagePickerr().uploadImage('gallery');
                     setState(() {
-                      _imageFile = _imagefilee;
+                      _imageFile = imagefilee;
                     });
                   },
                   child: CircleAvatar(

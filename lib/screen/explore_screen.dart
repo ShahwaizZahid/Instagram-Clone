@@ -21,10 +21,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
   @override
   Widget build(BuildContext context) {
     // Detect the height of the keyboard
-    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Allows the BottomNavigationBar to adjust
+      resizeToAvoidBottomInset:
+          true, // Allows the BottomNavigationBar to adjust
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -35,7 +35,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 slivers: [
                   if (show)
                     StreamBuilder<QuerySnapshot>(
-                      stream: _firebaseFirestore.collection('posts').snapshots(),
+                      stream:
+                          _firebaseFirestore.collection('posts').snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const SliverToBoxAdapter(
@@ -46,7 +47,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                         }
                         return SliverGrid(
                           delegate: SliverChildBuilderDelegate(
-                                (context, index) {
+                            (context, index) {
                               final snap = snapshot.data!.docs[index];
                               return GestureDetector(
                                 onTap: () {
@@ -59,7 +60,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                   );
                                 },
                                 child: Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                     color: Colors.grey,
                                   ),
                                   child: CachedImage(
@@ -89,33 +90,39 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     StreamBuilder(
                       stream: _firebaseFirestore
                           .collection('users')
-                          .where('username', isGreaterThanOrEqualTo: search.text)
+                          .where('username',
+                              isGreaterThanOrEqualTo: search.text)
                           .snapshots(),
                       builder: (context, snapshot) {
                         if (!snapshot.hasData) {
                           return const SliverToBoxAdapter(
-                              child: Center(child: CircularProgressIndicator()));
+                              child:
+                                  Center(child: CircularProgressIndicator()));
                         }
                         return SliverPadding(
-                          padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 5.h),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15.w, vertical: 5.h),
                           sliver: SliverList(
                             delegate: SliverChildBuilderDelegate(
-                                  (context, index) {
+                              (context, index) {
                                 final snap = snapshot.data!.docs[index];
                                 return Column(
                                   children: [
                                     SizedBox(height: 10.h),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => ProfileScreen(Uid: snap.id),
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileScreen(Uid: snap.id),
                                         ));
                                       },
                                       child: Row(
                                         children: [
                                           CircleAvatar(
                                             radius: 23.r,
-                                            backgroundImage: NetworkImage(snap['profile']),
+                                            backgroundImage:
+                                                NetworkImage(snap['profile']),
                                           ),
                                           SizedBox(width: 15.w),
                                           Text(snap['username']),
@@ -140,6 +147,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Widget SearchBox() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),

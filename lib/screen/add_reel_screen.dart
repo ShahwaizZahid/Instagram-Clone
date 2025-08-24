@@ -41,62 +41,60 @@ class _AddReelsScreenState extends State<AddReelsScreen> {
       for (var asset in media) {
         temp.add(
           FutureBuilder(
-            future: asset.thumbnailDataWithSize(ThumbnailSize(200, 200)),
+            future: asset.thumbnailDataWithSize(const ThumbnailSize(200, 200)),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                return Container(
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: Image.memory(
-                          snapshot.data!,
-                          fit: BoxFit.cover,
-                        ),
+                return Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Image.memory(
+                        snapshot.data!,
+                        fit: BoxFit.cover,
                       ),
-                      if (asset.type == AssetType.video)
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Container(
-                            margin: EdgeInsets.only(bottom: 10.h, right: 26.w),
-                            width: 35.w,
-                            height: 15.h,
-                            alignment: Alignment.center,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Row(
-                                children: [
-                                  Text(
-                                    asset.videoDuration.inMinutes
-                                        .toString()
-                                        .padLeft(2, '0'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
+                    ),
+                    if (asset.type == AssetType.video)
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 10.h, right: 26.w),
+                          width: 35.w,
+                          height: 15.h,
+                          alignment: Alignment.center,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Row(
+                              children: [
+                                Text(
+                                  asset.videoDuration.inMinutes
+                                      .toString()
+                                      .padLeft(2, '0'),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
                                   ),
-                                  Text(
-                                    ':',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
+                                ),
+                                const Text(
+                                  ':',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
                                   ),
-                                  Text(
-                                    (asset.videoDuration.inSeconds % 60)
-                                        .toString()
-                                        .padLeft(2, '0'),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
+                                ),
+                                Text(
+                                  (asset.videoDuration.inSeconds % 60)
+                                      .toString()
+                                      .padLeft(2, '0'),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        )
-                    ],
-                  ),
+                        ),
+                      )
+                  ],
                 );
               }
 

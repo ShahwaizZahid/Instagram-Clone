@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+// ignore_for_file: non_constant_identifier_names, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ import '../util/image_cached.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String Uid;
-  ProfileScreen({super.key, required this.Uid});
+  const ProfileScreen({super.key, required this.Uid});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -37,14 +38,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     fetchVideoUrls(widget.Uid);
   }
 
-
-
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-
 
   Future<void> getData() async {
     try {
@@ -88,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -98,22 +95,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: SafeArea(
           child: Column(
             children: [
-              Container(
-                child: FutureBuilder<Usermodel>(
-                  future: Firebase_Firestor().getUser(uidd: widget.Uid),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-                    if (!snapshot.hasData) {
-                      return const Center(child: Text('User not found.'));
-                    }
-                    return Head(snapshot.data!);
-                  },
-                ),
+              FutureBuilder<Usermodel>(
+                future: Firebase_Firestor().getUser(uidd: widget.Uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  if (!snapshot.hasData) {
+                    return const Center(child: Text('User not found.'));
+                  }
+                  return Head(snapshot.data!);
+                },
               ),
               SizedBox(
                 width: double.infinity,
@@ -134,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Posts(),
                     Reels(),
-                    Center(child: Text('About content here')),
+                    const Center(child: Text('About content here')),
                   ],
                 ),
               ),
@@ -272,14 +267,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: isCurrentUser ? Colors.white : Colors.blue,
                     borderRadius: BorderRadius.circular(5.r),
                     border: Border.all(
-                        color: isCurrentUser ? Colors.grey.shade400 : Colors.blue),
+                        color:
+                            isCurrentUser ? Colors.grey.shade400 : Colors.blue),
                   ),
                   child: isCurrentUser
-                      ? Text('Edit Your Profile')
-                      : Text(
-                    'Follow',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                      ? const Text('Edit Your Profile')
+                      : const Text(
+                          'Follow',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 ),
               ),
             ),
@@ -307,7 +303,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(5.r),
                             border: Border.all(color: Colors.grey.shade200),
                           ),
-                          child: Text('Unfollow')),
+                          child: const Text('Unfollow')),
                     ),
                   ),
                   SizedBox(width: 8.w),
@@ -321,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(5.r),
                         border: Border.all(color: Colors.grey.shade200),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Message',
                         style: TextStyle(color: Colors.black),
                       ),
@@ -394,7 +390,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         // Set the volume to 0
 
-
         return GestureDetector(
           // onTap: () {
           //   Navigator.of(context).push(
@@ -404,12 +399,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           //   );
           // },
           child: Container(
-            margin: EdgeInsets.all(4.0),
+            margin: const EdgeInsets.all(4.0),
             child: VlcPlayer(
               controller: controller,
 
               aspectRatio: 16 / 9,
-              placeholder: Center(child: CircularProgressIndicator()),
+              placeholder: const Center(child: CircularProgressIndicator()),
               // Add more customization here if needed
             ),
           ),
@@ -417,5 +412,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
-
 }
