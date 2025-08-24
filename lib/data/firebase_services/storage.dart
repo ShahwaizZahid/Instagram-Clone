@@ -1,3 +1,5 @@
+// ignore_for_file: use_rethrow_when_possible
+
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,13 +11,10 @@ class StorageMethod {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String> uploadImageToStorage(String name, File file) async {
-    var uuid = Uuid().v4();
+    var uuid = const Uuid().v4();
 
-    Reference ref = _storage
-        .ref()
-        .child(name)
-        .child(_auth.currentUser!.uid)
-        .child(uuid);
+    Reference ref =
+        _storage.ref().child(name).child(_auth.currentUser!.uid).child(uuid);
 
     try {
       // Upload the file
@@ -27,6 +26,7 @@ class StorageMethod {
       return downloadUrl;
     } catch (e) {
       // Handle errors
+      // ignore: avoid_print
       print('Error uploading image: $e');
       throw e;
     }

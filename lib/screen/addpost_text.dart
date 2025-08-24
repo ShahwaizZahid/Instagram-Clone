@@ -1,15 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../data/firebase_services/firestore.dart';
 import '../data/firebase_services/storage.dart';
 
+// ignore: must_be_immutable
 class AddPostTextScreen extends StatefulWidget {
-  File _file;
-  AddPostTextScreen(this._file, {super.key});
+  final File _file;
+  const AddPostTextScreen(this._file, {super.key});
 
   @override
   State<AddPostTextScreen> createState() => _AddPostTextScreenState();
@@ -23,10 +23,10 @@ class _AddPostTextScreenState extends State<AddPostTextScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Text(
+        title: const Text(
           'New post',
           style: TextStyle(color: Colors.black),
         ),
@@ -40,10 +40,10 @@ class _AddPostTextScreenState extends State<AddPostTextScreen> {
                   setState(() {
                     islooding = true;
                   });
-                  String post_url = await StorageMethod()
+                  String postUrl = await StorageMethod()
                       .uploadImageToStorage('post', widget._file);
                   await Firebase_Firestor().CreatePost(
-                    postImage: post_url,
+                    postImage: postUrl,
                     caption: caption.text,
                     location: location.text,
                   );
@@ -64,11 +64,11 @@ class _AddPostTextScreenState extends State<AddPostTextScreen> {
       ),
       body: SafeArea(
           child: islooding
-              ? Center(
-                child: const CircularProgressIndicator(
+              ? const Center(
+                  child: CircularProgressIndicator(
                     color: Colors.black,
                   ),
-              )
+                )
               : Padding(
                   padding: EdgeInsets.only(top: 10.h),
                   child: Column(
@@ -105,7 +105,7 @@ class _AddPostTextScreenState extends State<AddPostTextScreen> {
                           ],
                         ),
                       ),
-                      Divider(),
+                      const Divider(),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.w),
                         child: SizedBox(

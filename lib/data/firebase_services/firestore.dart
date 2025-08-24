@@ -1,13 +1,18 @@
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 import '../../util/exception.dart';
 import '../model/usermodel.dart';
 
+// ignore: camel_case_types
 class Firebase_Firestor {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // ignore: duplicate_ignore
+  // ignore: non_constant_identifier_names
   Future<bool> CreateUser({
     required String email,
     required String username,
@@ -32,7 +37,7 @@ class Firebase_Firestor {
     try {
       final user = await _firebaseFirestore
           .collection('users')
-          .doc(uidd  ?? _auth.currentUser!.uid)
+          .doc(uidd ?? _auth.currentUser!.uid)
           .get();
       final snapuser = user.data()!;
       return Usermodel(
@@ -52,8 +57,8 @@ class Firebase_Firestor {
     required String caption,
     required String location,
   }) async {
-    var uid = Uuid().v4();
-    DateTime data = new DateTime.now();
+    var uid = const Uuid().v4();
+    DateTime data = DateTime.now();
     Usermodel user = await getUser();
     await _firebaseFirestore.collection('posts').doc(uid).set({
       'postImage': postImage,
@@ -74,7 +79,7 @@ class Firebase_Firestor {
     required String caption,
   }) async {
     var uid = Uuid().v4();
-    DateTime data = new DateTime.now();
+    DateTime data = DateTime.now();
     Usermodel user = await getUser();
     await _firebaseFirestore.collection('reels').doc(uid).set({
       'reelsvideo': video,
@@ -165,6 +170,7 @@ class Firebase_Firestor {
         });
       }
     } on Exception catch (e) {
+      // ignore: avoid_print
       print(e.toString());
     }
   }

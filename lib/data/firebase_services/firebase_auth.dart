@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:isntragram_clone/data/firebase_services/storage.dart';
@@ -8,8 +7,9 @@ import '../../util/exception.dart';
 import 'firestore.dart';
 
 class Authentication {
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // ignore: non_constant_identifier_names
   Future<void> Login({
     required String email,
     required String password,
@@ -29,7 +29,7 @@ class Authentication {
     }
   }
 
-
+  // ignore: non_constant_identifier_names
   Future<void> Signup({
     required String email,
     required String password,
@@ -38,6 +38,7 @@ class Authentication {
     required String bio,
     required File? profile,
   }) async {
+    // ignore: non_constant_identifier_names
     String URL = '';
     try {
       await _auth.createUserWithEmailAndPassword(
