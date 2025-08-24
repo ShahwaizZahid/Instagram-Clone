@@ -1,5 +1,6 @@
+// ignore_for_file: must_be_immutable, non_constant_identifier_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -51,7 +52,7 @@ class _CommentState extends State<Comment> {
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                     return comment_item(snapshot.data!.docs[index].data());
                   },

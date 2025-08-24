@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -8,6 +9,7 @@ import '../util/image_cached.dart';
 
 class ProfileHead extends StatefulWidget {
   final Usermodel user;
+  // ignore: prefer_typing_uninitialized_variables, non_constant_identifier_names
   final Uid;
   bool isCurrentUser = false;
   bool follow = false;
@@ -150,8 +152,8 @@ class _ProfileHeadState extends State<ProfileHead> {
                           color:widget.isCurrentUser ? Colors.grey.shade400 : Colors.blue),
                     ),
                     child:widget.isCurrentUser
-                        ? Text('Edit Your Profile')
-                        : Text(
+                        ? const Text('Edit Your Profile')
+                        : const Text(
                       'Follow',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -182,7 +184,7 @@ class _ProfileHeadState extends State<ProfileHead> {
                               borderRadius: BorderRadius.circular(5.r),
                               border: Border.all(color: Colors.grey.shade200),
                             ),
-                            child: Text('Unfollow')),
+                            child: const Text('Unfollow')),
                       ),
                     ),
                     SizedBox(width: 8.w),
@@ -196,7 +198,7 @@ class _ProfileHeadState extends State<ProfileHead> {
                           borderRadius: BorderRadius.circular(5.r),
                           border: Border.all(color: Colors.grey.shade200),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Message',
                           style: TextStyle(color: Colors.black),
                         ),

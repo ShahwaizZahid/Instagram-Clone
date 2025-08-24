@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +14,7 @@ import 'like_animation.dart';
 
 class ReelsItem extends StatefulWidget {
   final dynamic snapshot;
-  ReelsItem(this.snapshot, {super.key});
+  const ReelsItem(this.snapshot, {super.key});
 
   @override
   State<ReelsItem> createState() => _ReelsItemState();
@@ -85,7 +87,7 @@ class _ReelsItemState extends State<ReelsItem> {
             });
           },
           onTap: _togglePlayPause,
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: VlcPlayer(

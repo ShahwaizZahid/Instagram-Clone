@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:date_format/date_format.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +12,7 @@ import 'like_animation.dart';
 
 class PostWidget extends StatefulWidget {
   final snapshot;
-  PostWidget(this.snapshot, {super.key});
+  const PostWidget(this.snapshot, {super.key});
 
   @override
   State<PostWidget> createState() => _PostWidgetState();
@@ -28,6 +29,7 @@ class _PostWidgetState extends State<PostWidget> {
     user = _auth.currentUser!.uid;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -52,7 +54,7 @@ class _PostWidgetState extends State<PostWidget> {
                 widget.snapshot['location'],
                 style: TextStyle(fontSize: 11.sp),
               ),
-              trailing: Icon(Icons.more_horiz),
+              trailing: const Icon(Icons.more_horiz),
             ),
           ),
         ),
@@ -71,7 +73,7 @@ class _PostWidgetState extends State<PostWidget> {
             });
           },
           child: Stack(alignment: Alignment.center, children: [
-            Container(
+            SizedBox(
               height: 375.h,
               width: 375.w,
               child: CachedImage(
