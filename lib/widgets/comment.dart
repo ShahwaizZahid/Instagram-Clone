@@ -31,7 +31,6 @@ class _CommentState extends State<Comment> {
         color: Colors.white,
         height: 200.h,
         child: Stack(
-
           children: [
             Positioned(
               top: 8.h,
@@ -42,25 +41,28 @@ class _CommentState extends State<Comment> {
                 color: Colors.black,
               ),
             ),
-            StreamBuilder<QuerySnapshot>(stream: _firestore
-                .collection(widget.type)
-                .doc(widget.uid)
-                .collection('comments')
-                .snapshots(), builder:  (context, snapshot) {
-              return Padding(
-                padding: EdgeInsets.symmetric(vertical: 20.h),
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
-                    return comment_item(snapshot.data!.docs[index].data());
-                  },
-                  itemCount:
-                  snapshot.data == null ? 0 : snapshot.data!.docs.length,
-                ),
-              );
-            },),
+            StreamBuilder<QuerySnapshot>(
+              stream: _firestore
+                  .collection(widget.type)
+                  .doc(widget.uid)
+                  .collection('comments')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20.h),
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      if (!snapshot.hasData) {
+                        return const CircularProgressIndicator();
+                      }
+                      return comment_item(snapshot.data!.docs[index].data());
+                    },
+                    itemCount:
+                        snapshot.data == null ? 0 : snapshot.data!.docs.length,
+                  ),
+                );
+              },
+            ),
             Positioned(
               bottom: 0,
               left: 0,
@@ -102,10 +104,10 @@ class _CommentState extends State<Comment> {
                       },
                       child: islodaing
                           ? SizedBox(
-                        width: 10.w,
-                        height: 10.h,
-                        child: const CircularProgressIndicator(),
-                      )
+                              width: 10.w,
+                              height: 10.h,
+                              child: const CircularProgressIndicator(),
+                            )
                           : const Icon(Icons.send),
                     ),
                   ],
@@ -117,6 +119,7 @@ class _CommentState extends State<Comment> {
       ),
     );
   }
+
   Widget comment_item(final snapshot) {
     return ListTile(
       leading: ClipOval(
@@ -145,5 +148,4 @@ class _CommentState extends State<Comment> {
       ),
     );
   }
-
 }
