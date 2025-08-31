@@ -1,5 +1,4 @@
 // ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/cupertino.dart';
 
 class LikeAnimation extends StatefulWidget {
@@ -34,7 +33,8 @@ class _LikeAnimationState extends State<LikeAnimation>
     );
     scale = Tween<double>(begin: 1, end: 1.2).animate(controller);
   }
-@override
+
+  @override
   void didUpdateWidget(covariant LikeAnimation oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.isAnimating != oldWidget.isAnimating) {
@@ -55,6 +55,7 @@ class _LikeAnimationState extends State<LikeAnimation>
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return ScaleTransition(
